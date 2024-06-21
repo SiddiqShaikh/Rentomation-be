@@ -1,6 +1,11 @@
 import dotenv from "dotenv";
 import { app } from "./app.js";
 import connectDB from "./db/index.js";
+import http from "http";
+import { Server } from "socket.io";
+
+const server = http.createServer(app);
+const io = new Server(server);
 
 dotenv.config({
   path: "./.env",
@@ -14,6 +19,9 @@ connectDB()
     });
     app.listen(PORT, () => {
       console.log(`Server is running at port ${PORT}`);
+      io.on("connection", (socket) => {
+        socket.emit("setup", "Youre connected to socket");
+      });
     });
   })
   .catch((err) => {

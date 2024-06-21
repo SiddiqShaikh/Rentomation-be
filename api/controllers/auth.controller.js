@@ -116,7 +116,7 @@ const login = asyncHandler(async (req, res) => {
     }
 
     const isPasswordValid = await foundUser.isPasswordCorrect(password);
-    console.log(foundUser)
+    console.log(foundUser);
     if (!isPasswordValid) {
       return res.status(400).json({
         success: false,
@@ -145,4 +145,29 @@ const login = asyncHandler(async (req, res) => {
   }
 });
 
-export { register, login };
+const getProfile = asyncHandler(async (req, res) => {
+  try {
+    const user = req.user;
+    const foundUser = await User.findById(user._id).select(
+      "-password -refreshToken"
+    );
+    if (!foundUser) {
+      return res.status(400).json({
+        success: false,
+        message: "No User Found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Profile Fetched successfully",
+      data: foundUser,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Network Error",
+    });
+  }
+});
+
+export { register, login, getProfile };
