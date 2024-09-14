@@ -1,19 +1,48 @@
 import mongoose, { Schema } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
-
-const propertySchema = new Schema(
+const locationSchema = new Schema(
   {
     name: {
       type: String,
       required: true,
     },
+    lat: {
+      type: Number,
+      required: true,
+    },
+    lng: {
+      type: Number,
+      required: true,
+    },
+  },
+  { _id: false }
+);
+const propertySchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+
+    description: {
+      type: String,
+      required: true,
+    },
+
     city: { type: String, required: true },
-    address: { type: String, required: true },
+    location: { type: locationSchema, required: true },
     images: { type: [String], required: false },
-    room: { type: Number, required: false },
-    propertyType: { type: String, required: false },
+    bed: { type: Number, required: false, default: 1 },
+    shower: { type: Number, required: false, default: 1 },
+    payper: { type: String, required: false },
     parking: { type: Boolean, default: false },
     rent: { type: String, required: true },
+    status: {
+      type: String,
+      required: false,
+      enums: ["verified", "unverified"],
+      default: "verified",
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "User",
