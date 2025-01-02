@@ -40,7 +40,7 @@ const propertySchema = new Schema(
     status: {
       type: String,
       required: false,
-      enums: ["verified", "unverified"],
+      enum: ["verified", "unverified"],
       default: "verified",
     },
     owner: {
