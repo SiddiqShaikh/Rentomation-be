@@ -199,6 +199,7 @@ const getAllProperties = asyncHandler(async (req, res) => {
     });
   }
 });
+
 // const getAllProperties = asyncHandler(async (req, res) => {
 //   const {
 //     page = 1,
@@ -523,6 +524,7 @@ const getMyProperties = asyncHandler(async (req, res) => {
     });
   }
 });
+
 const getPropertyDetails = asyncHandler(async (req, res) => {
   try {
     const { propertyId } = req.params;
@@ -697,7 +699,10 @@ const deleteProperty = asyncHandler(async (req, res) => {
 });
 
 export {
-  createProperty, deleteProperty, getAllProperties,
-  getMyProperties, getPropertyDetails, updateProperty
+  createProperty,
+  deleteProperty,
+  getAllProperties,
+  getMyProperties,
+  getPropertyDetails,
+  updateProperty,
 };
-

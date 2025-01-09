@@ -4,6 +4,8 @@ import {
   UserLoginValidation,
   UserRegisterValidation,
 } from "../utils/schemaValidations/userValidation.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { ApiError } from "../utils/ApiError.js";
 
 const generateToken = async (userId) => {
   const user = await User.findById(userId);
@@ -170,4 +172,41 @@ const getProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { register, login, getProfile };
+const uploadOnCloudinaryImage = asyncHandler(async (req, res) => {
+  try {
+    if (!req.file?.path) {
+      return res
+        .status(400)
+        .json(new ApiError(400, "Image is required", ["Image is required"]));
+    }
+    const localProfileImage = req.file?.path;
+
+    if (!localProfileImage) {
+      return res
+        .status(400)
+        .json(new ApiError(400, "Image is required", ["Image is required"]));
+    }
+    const profileUpload = await uploadOnCloudinary(localProfileImage);
+
+    if (!profileUpload) {
+      return res
+        .status(400)
+        .json(new ApiError(400, "Cloudinary Error::", ["Cloudinary Error::"]));
+    }
+    const sendReponse = {
+      url: profileUpload.url,
+      public_id: profileUpload.public_id,
+    };
+    return res
+      .status(200)
+      .json(new ApiResponse(200, sendReponse, "Image Upload Successfully"));
+  } catch (err) {
+    return res
+      .status(500)
+      .json(
+        new ApiError(500, "Internal Server Error", ["Internal Server Error"])
+      );
+  }
+});
+
+export { register, login, getProfile, uploadOnCloudinaryImage };
