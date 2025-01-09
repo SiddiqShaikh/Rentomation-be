@@ -6,7 +6,7 @@ import {
   uploadOnCloudinaryImage,
 } from "../controllers/auth.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
-import { getAllUser } from "../controllers/user.controller.js";
+import { deleteUser, getAllUser } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
@@ -20,5 +20,6 @@ router
   .post(upload.single("profile"), uploadOnCloudinaryImage);
 
 router.route("/get-users").get(getAllUser);
+router.route("/:id").delete(deleteUser);
 
 export default router;

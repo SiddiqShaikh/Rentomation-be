@@ -57,5 +57,36 @@ const getAllUser = asyncHandler(async (req, res) => {
     });
   }
 });
+const deleteUser = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
 
-export { getAllUser };
+    const existedUser = await User.findById(id);
+    if (!existedUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const deleteUser = await User.findByIdAndDelete(existedUser._id);
+    if (!deleteUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User failed to delete",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+      data: null,
+    });
+  } catch (err) {
+    // console.log(err,"====err====")
+    return res.status(500).json({
+      success: false,
+      message: "Network Error",
+    });
+  }
+});
+export { getAllUser, deleteUser };
