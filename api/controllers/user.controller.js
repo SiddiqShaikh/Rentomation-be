@@ -12,7 +12,6 @@ const getAllUser = asyncHandler(async (req, res) => {
   } = req.query;
 
   const matchConditions = {};
-
   if (query) {
     matchConditions.$or = [
       { username: { $regex: new RegExp(query, "i") } },

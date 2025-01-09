@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Property } from "../models/property.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { User } from "../models/user.model.js";
 
 const createProperty = asyncHandler(async (req, res) => {
   try {
@@ -200,214 +201,7 @@ const getAllProperties = asyncHandler(async (req, res) => {
   }
 });
 
-// const getAllProperties = asyncHandler(async (req, res) => {
-//   const {
-//     page = 1,
-//     limit = 10,
-//     sortType = "desc",
-//     sortBy = "createdAt",
-//     search = "",
-//     rentRange = "", // Rent range parameter
-//   } = req.query;
 
-//   const pipeline = [];
-//   const matchConditions = [{ status: "verified" }];
-
-//   if (search) {
-//     const searchRegex = new RegExp(search, "i");
-//     matchConditions.push({
-//       $or: [
-//         { "location.name": searchRegex },
-//         { city: searchRegex },
-//         { title: searchRegex },
-//       ],
-//     });
-//   }
-
-//   if (rentRange) {
-//     const [minRent, maxRent] = rentRange.split("-");
-//     matchConditions.push({
-//       rent: { $gte: parseInt(minRent, 10), $lte: parseInt(maxRent, 10) },
-//     });
-//   }
-
-//   pipeline.push({
-//     $match: { $and: matchConditions },
-//   });
-
-//   pipeline.push({
-//     $sort: {
-//       [sortBy]: sortType === "asc" ? 1 : -1,
-//     },
-//   });
-//   pipeline.push({
-//     $skip: (page - 1) * limit,
-//   });
-//   pipeline.push({
-//     $limit: parseInt(limit, 10),
-//   });
-//   pipeline.push({
-//     $lookup: {
-//       from: "users", // The name of the User collection
-//       localField: "owner", // Field from Property collection
-//       foreignField: "_id", // Field from User collection
-//       as: "ownerDetails", // Output array field
-//     },
-//   });
-
-//   pipeline.push({
-//     $unwind: "$ownerDetails",
-//   });
-//   pipeline.push({
-//     $project: {
-//       title: 1,
-//       description: 1,
-//       city: 1,
-//       location: 1,
-//       images: 1,
-//       bed: 1,
-//       shower: 1,
-//       payper: 1,
-//       parking: 1,
-//       rent: 1,
-//       status: 1,
-//       createdAt: 1,
-//       "ownerDetails.email": 1,
-//       "ownerDetails.name": 1,
-//       "ownerDetails.city": 1,
-//       "ownerDetails.profileImage": 1,
-//     },
-//   });
-
-//   const propertyAggregate = Property.aggregate(pipeline);
-//   const options = {
-//     page: parseInt(page, 10),
-//     limit: parseInt(limit, 10),
-//   };
-
-//   try {
-//     const properties = await Property.aggregatePaginate(
-//       propertyAggregate,
-//       options
-//     );
-//     if (!properties) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Failed to fetch properties",
-//       });
-//     }
-//     return res.status(200).json({
-//       success: true,
-//       message: "Property fetched successfully",
-//       data: properties,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       success: false,
-//       message: "Network Error",
-//     });
-//   }
-// });
-// const getAllProperties = asyncHandler(async (req, res) => {
-//   const {
-//     page = 1,
-//     limit = 10,
-//     sortType = "desc",
-//     sortBy = "createdAt",
-//     search = "",
-//     // rentRange = "", // Rent range parameter
-//   } = req.query;
-
-//   const pipeline = [];
-//   const matchConditions = [{ status: "verified" }];
-
-//   // Search filter
-//   if (search) {
-//     const searchRegex = new RegExp(search, "i");
-//     matchConditions.push({
-//       $or: [
-//         { "location.name": searchRegex },
-//         { city: searchRegex },
-//         { title: searchRegex },
-//       ],
-//     });
-//   }
-
-//   // Rent range filter
-//   // if (rentRange && typeof rentRange === 'string') {
-//   //   const rentValues = rentRange.split("-");
-//   //   if (rentValues.length === 2) {
-//   //     const [minRent, maxRent] = rentValues.map(value => parseInt(value, 10));
-//   //     if (!isNaN(minRent) && !isNaN(maxRent)) {
-//   //       matchConditions.push({
-//   //         rent: { $gte: minRent, $lte: maxRent },
-//   //       });
-//   //     }
-//   //   }
-//   // }
-
-//   // Main aggregation pipeline
-//   pipeline.push({
-//     $match: { $and: matchConditions },
-//   });
-
-//   pipeline.push({
-//     $sort: {
-//       [sortBy]: sortType === "asc" ? 1 : -1,
-//     },
-//   });
-//   pipeline.push({
-//     $skip: (page - 1) * limit,
-//   });
-//   pipeline.push({
-//     $limit: parseInt(limit, 10),
-//   });
-//   pipeline.push({
-//     $lookup: {
-//       from: "users", // The name of the User collection
-//       localField: "owner", // Field from Property collection
-//       foreignField: "_id", // Field from User collection
-//       as: "ownerDetails", // Output array field
-//     },
-//   });
-
-//   pipeline.push({
-//     $unwind: "$ownerDetails",
-//   });
-//   pipeline.push({
-//     $project: {
-//       title: 1,
-//       description: 1,
-//       city: 1,
-//       location: 1,
-//       images: 1,
-//       bed: 1,
-//       shower: 1,
-//       payper: 1,
-//       parking: 1,
-//       rent: 1,
-//       status: 1,
-//       createdAt: 1,
-//       "ownerDetails.email": 1,
-//       "ownerDetails.name": 1,
-//       "ownerDetails.city": 1,
-//       "ownerDetails.profileImage": 1,
-//     },
-//   });
-
-//   const propertyAggregate = Property.aggregate(pipeline);
-//   const options = {
-//     page: parseInt(page, 10),
-//     limit: parseInt(limit, 10),
-//   };
-
-//   try {
-//     const properties = await Property.aggregatePaginate(propertyAggregate, options);
-//     res.json(properties);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// });
 const getMyProperties = asyncHandler(async (req, res) => {
   const {
     page = 1,
@@ -650,7 +444,6 @@ const updateProperty = asyncHandler(async (req, res) => {
       data: updateProperty,
     });
   } catch (err) {
-    console.log(err, "====err====");
     return res.status(500).json({
       success: false,
       message: "Network Error",
@@ -698,6 +491,80 @@ const deleteProperty = asyncHandler(async (req, res) => {
   }
 });
 
+const getDashboardAnalytics = asyncHandler(async (req, res) => {
+
+  try {
+    const result = await Promise.all([
+      User.aggregate([
+        {
+          $facet: {
+            totalUsers: [{ $count: "count" }],
+          },
+        },
+        {
+          $project: {
+            totalUsers: {
+              $ifNull: [{ $arrayElemAt: ["$totalUsers.count", 0] }, 0],
+            },
+          },
+        },
+      ]),
+      Property.aggregate([
+        {
+          $facet: {
+            totalProperties: [{ $count: "count" }],
+            verifiedProperties: [
+              { $match: { status: "verified" } },
+              { $count: "count" },
+            ],
+            unverifiedProperties: [
+              { $match: { status: "unverified" } },
+              { $count: "count" },
+            ],
+          },
+        },
+        {
+          $project: {
+            totalProperties: {
+              $ifNull: [{ $arrayElemAt: ["$totalProperties.count", 0] }, 0],
+            },
+            verifiedProperties: {
+              $ifNull: [{ $arrayElemAt: ["$verifiedProperties.count", 0] }, 0],
+            },
+            unverifiedProperties: {
+              $ifNull: [
+                { $arrayElemAt: ["$unverifiedProperties.count", 0] },
+                0,
+              ],
+            },
+          },
+        },
+      ]),
+    ]);
+
+    const [userStats, propertyStats] = result;
+
+    const analytics = {
+      totalUsers: userStats[0]?.totalUsers || 0,
+      totalProperties: propertyStats[0]?.totalProperties || 0,
+      verifiedProperties: propertyStats[0]?.verifiedProperties || 0,
+      unverifiedProperties: propertyStats[0]?.unverifiedProperties || 0,
+    };
+
+    return res.status(200).json({
+      message: "Dashboard fetched",
+      status: true,
+      data: analytics,
+    });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json(
+        new ApiError(500, "Internal Server Error", ["Internal Server Error"])
+      );
+  }
+});
 export {
   createProperty,
   deleteProperty,
@@ -705,4 +572,5 @@ export {
   getMyProperties,
   getPropertyDetails,
   updateProperty,
+  getDashboardAnalytics,
 };

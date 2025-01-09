@@ -19,6 +19,6 @@ router
   .route("/upload-picture")
   .post(upload.single("profile"), uploadOnCloudinaryImage);
 
-router.route("/get-users").get(verifyJWT, getAllUser);
+router.route("/get-users").get(getAllUser);
 
 export default router;

@@ -29,11 +29,13 @@ app.use(express.static("public"));
 app.use(cookieParser());
 import userRouter from "./routes/user.routes.js";
 import propertyRouter from "./routes/property.routes.js";
+import complaintRouter from "./routes/complain.routes.js";
 app.get("/", async (req, res) => {
   res.send("Server running");
 });
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/property", propertyRouter);
+app.use("/api/v1/property", complaintRouter);
 
 export { app };

@@ -1,11 +1,8 @@
 import { User } from "../models/user.model.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
-import {
-  UserLoginValidation,
-  UserRegisterValidation,
-} from "../utils/schemaValidations/userValidation.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiError } from "../utils/ApiError.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { UserLoginValidation } from "../utils/schemaValidations/userValidation.js";
 
 const generateToken = async (userId) => {
   const user = await User.findById(userId);
@@ -15,7 +12,6 @@ const generateToken = async (userId) => {
   return { refreshToken };
 };
 const register = asyncHandler(async (req, res) => {
-  //username, nic, email, password, city
   try {
     if (Object.keys(req.body).length < 1) {
       return res.status(400).json({
@@ -23,26 +19,8 @@ const register = asyncHandler(async (req, res) => {
         message: "Body required",
       });
     }
-    //validate required body here
-    const reqBody = Object.keys(req.body);
-    const validBody = ["username", "cnic", "email", "password", "city"];
 
-    const isValidBody = reqBody.every((body) => validBody.includes(body));
-    if (!isValidBody) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid Body params",
-      });
-    }
-    const { value, error } = UserRegisterValidation.validate(req.body);
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing required field(s)",
-        error: `${error.details[0].path} error`,
-      });
-    }
-    const { username, cnic, email, password, city } = req.body;
+    const { username, cnic, email, password, city, role } = req.body;
     const existedUser = await User.findOne({
       $or: [{ email }],
     });
@@ -58,6 +36,7 @@ const register = asyncHandler(async (req, res) => {
       username,
       password,
       city,
+      role,
     });
     if (!createdUser) {
       return res.status(400).json({
@@ -197,9 +176,11 @@ const uploadOnCloudinaryImage = asyncHandler(async (req, res) => {
       url: profileUpload.url,
       public_id: profileUpload.public_id,
     };
-    return res
-      .status(200)
-      .json(new ApiResponse(200, sendReponse, "Image Upload Successfully"));
+    return res.status(200).json({
+      success: true,
+      message: "Images Uploaded",
+      data: sendReponse,
+    });
   } catch (err) {
     return res
       .status(500)
@@ -209,4 +190,4 @@ const uploadOnCloudinaryImage = asyncHandler(async (req, res) => {
   }
 });
 
-export { register, login, getProfile, uploadOnCloudinaryImage };
+export { getProfile, login, register, uploadOnCloudinaryImage };

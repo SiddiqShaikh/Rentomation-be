@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import bcypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 const userSchema = new Schema(
   {
     username: {
@@ -17,6 +17,11 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+    },
+    role: {
+      type: String,
+      required: false,
+      enum: ["user", "admin"],
     },
     email: {
       type: String,
@@ -58,5 +63,5 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcypt.compare(password, this.password);
 };
-
+userSchema.plugin(mongooseAggregatePaginate);
 export const User = mongoose.model("User", userSchema);
