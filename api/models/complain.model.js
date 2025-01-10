@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const complaintSchema = new mongoose.Schema(
   {
     complaintText: {
@@ -10,12 +9,12 @@ const complaintSchema = new mongoose.Schema(
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Reference to the User model
+      ref: "User",
       required: true,
     },
   },
   {
-    timestamps: true, // Automatically manages createdAt and updatedAt
+    timestamps: true,
   }
 );
 

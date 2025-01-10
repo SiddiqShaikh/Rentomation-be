@@ -201,7 +201,6 @@ const getAllProperties = asyncHandler(async (req, res) => {
   }
 });
 
-
 const getMyProperties = asyncHandler(async (req, res) => {
   const {
     page = 1,
@@ -405,6 +404,7 @@ const updateProperty = asyncHandler(async (req, res) => {
       "rent",
       "description",
       "shower",
+      "status",
     ];
 
     const isValidBody = reqBody.every((body) => validBody.includes(body));
@@ -492,7 +492,6 @@ const deleteProperty = asyncHandler(async (req, res) => {
 });
 
 const getDashboardAnalytics = asyncHandler(async (req, res) => {
-
   try {
     const result = await Promise.all([
       User.aggregate([
