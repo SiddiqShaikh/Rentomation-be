@@ -36,6 +36,6 @@ app.get("/", async (req, res) => {
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/property", propertyRouter);
-app.use("/api/v1/property", complaintRouter);
+app.use("/api/v1/complain", complaintRouter);
 
 export { app };
