@@ -346,7 +346,7 @@ const getPropertyDetails = asyncHandler(async (req, res) => {
           rent: "$rent", // Rent amount
           location: "$location", // Location details
           city: "$city", // City
-          // images: "$images", // Property images
+          images: "$images", // Property images
           bed: "$bed", // Number of beds
           shower: "$shower", // Number of showers
           payper: "$payper", // Payment terms
