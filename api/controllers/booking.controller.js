@@ -8,7 +8,6 @@ import { Property } from "../models/property.model.js";
 // get booking by bookingId
 
 const createBooking = asyncHandler(async (req, res) => {
-  console.log("hitting");
   try {
     if (Object.keys(req.body).length < 1) {
       return res.status(400).json({
@@ -177,6 +176,28 @@ const getBookingsByOwnerId = asyncHandler(async (req, res) => {
     });
   }
 });
+const getBookingsByUserId = asyncHandler(async (req, res) => {
+  try {
+    const { userId } = req.params;
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "Owner Id required",
+      });
+    }
+    const bookings = await Booking.find({ owner: userId });
+    return res.status(200).json({
+      message: "Bookings fetched successfully",
+      bookings,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+});
 
 export {
   createBooking,
@@ -184,4 +205,5 @@ export {
   updateBooking,
   getBookingsByPropertyId,
   getBookingsByOwnerId,
+  getBookingsByUserId
 };
