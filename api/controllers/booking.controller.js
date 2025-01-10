@@ -160,10 +160,13 @@ const getBookingsByOwnerId = asyncHandler(async (req, res) => {
     if (!ownerId) {
       return res.status(400).json({
         success: false,
-        message: "Owner Id required",
+        message: "Owner ID required",
       });
     }
-    const bookings = await Booking.find({ owner: ownerId });
+
+    const bookings = await Booking.find({ owner: ownerId })
+      .populate('user', '-password -refreshToken -role'); // Populate user and exclude sensitive fields
+
     return res.status(200).json({
       message: "Bookings fetched successfully",
       bookings,
