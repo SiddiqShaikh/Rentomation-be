@@ -30,7 +30,7 @@ const createBooking = asyncHandler(async (req, res) => {
       endDateTime,
       rent: property.rent,
     });
-    await Booking.save();
+    await newBooking.save();
     return res.status(201).json({
       success: true,
       message: "Booking Created Successfully",
@@ -129,4 +129,27 @@ const updateBooking = asyncHandler(async (req, res) => {
   }
 });
 
-export { createBooking, getBookingById, updateBooking };
+const getBookingsByPropertyId = asyncHandler(async (req, res) => {
+  try {
+    const { propertyId } = req.params;
+    if (!propertyId) {
+      return res.status(400).json({
+        success: false,
+        message: "Property Id required",
+      });
+    }
+    const bookings = await Booking.find({ property: propertyId });
+    return res.status(200).json({
+      message: "Bookings fetched successfully",
+      bookings,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+});
+
+export { createBooking, getBookingById, updateBooking, getBookingsByPropertyId };
