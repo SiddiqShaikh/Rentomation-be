@@ -27,6 +27,7 @@ const createBooking = asyncHandler(async (req, res) => {
     const newBooking = new Booking({
       user: req.user._id,
       property: property._id,
+      owner: property.owner,
       startDateTime,
       endDateTime,
       rent: property.rent,
@@ -154,9 +155,33 @@ const getBookingsByPropertyId = asyncHandler(async (req, res) => {
   }
 });
 
+const getBookingsByOwnerId = asyncHandler(async (req, res) => {
+  try {
+    const { ownerId } = req.params;
+    if (!ownerId) {
+      return res.status(400).json({
+        success: false,
+        message: "Owner Id required",
+      });
+    }
+    const bookings = await Booking.find({ owner: ownerId });
+    return res.status(200).json({
+      message: "Bookings fetched successfully",
+      bookings,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+});
+
 export {
   createBooking,
   getBookingById,
   updateBooking,
   getBookingsByPropertyId,
+  getBookingsByOwnerId,
 };

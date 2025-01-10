@@ -20,7 +20,10 @@ const BookingSchema = new Schema(
     },
     startDateTime: { type: Date, required: true },
     endDateTime: { type: Date, required: true },
-    
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );

@@ -4,6 +4,7 @@ import {
   getBookingById,
   updateBooking,
   getBookingsByPropertyId,
+  getBookingsByOwnerId,
 } from "../controllers/booking.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
@@ -22,5 +23,8 @@ router.get(
 
 // Route for updating a booking
 router.put("/bookings/:id", verifyJWT, updateBooking);
+
+// Route for fetching bookings by property owner
+router.get("/bookings/owner/:ownerId", verifyJWT, getBookingsByOwnerId);
 
 export default router;
