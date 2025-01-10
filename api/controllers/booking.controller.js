@@ -8,6 +8,7 @@ import { Property } from "../models/property.model.js";
 // get booking by bookingId
 
 const createBooking = asyncHandler(async (req, res) => {
+  console.log("hitting");
   try {
     if (Object.keys(req.body).length < 1) {
       return res.status(400).json({
@@ -36,6 +37,7 @@ const createBooking = asyncHandler(async (req, res) => {
       message: "Booking Created Successfully",
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: error || "Internal Server Error",
@@ -152,4 +154,9 @@ const getBookingsByPropertyId = asyncHandler(async (req, res) => {
   }
 });
 
-export { createBooking, getBookingById, updateBooking, getBookingsByPropertyId };
+export {
+  createBooking,
+  getBookingById,
+  updateBooking,
+  getBookingsByPropertyId,
+};
