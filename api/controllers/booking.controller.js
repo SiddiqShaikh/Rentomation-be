@@ -2,11 +2,6 @@ import { Booking } from "../models/booking.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Property } from "../models/property.model.js";
 
-// create booking (userid, propertyid)
-// update booking status (only property owner can toggle to booked)
-// get bookings by propertyid, userid(ownerid, rentpersonid), status
-// get booking by bookingId
-
 const createBooking = asyncHandler(async (req, res) => {
   try {
     if (Object.keys(req.body).length < 1) {
@@ -164,8 +159,10 @@ const getBookingsByOwnerId = asyncHandler(async (req, res) => {
       });
     }
 
-    const bookings = await Booking.find({ owner: ownerId })
-      .populate('user', '-password -refreshToken -role'); // Populate user and exclude sensitive fields
+    const bookings = await Booking.find({ owner: ownerId }).populate(
+      "user",
+      "-password -refreshToken -role"
+    ); // Populate user and exclude sensitive fields
 
     return res.status(200).json({
       message: "Bookings fetched successfully",
@@ -188,7 +185,7 @@ const getBookingsByUserId = asyncHandler(async (req, res) => {
         message: "Owner Id required",
       });
     }
-    const bookings = await Booking.find({ owner: userId });
+    const bookings = await Booking.find({ user: userId });
     return res.status(200).json({
       message: "Bookings fetched successfully",
       bookings,
@@ -208,5 +205,5 @@ export {
   updateBooking,
   getBookingsByPropertyId,
   getBookingsByOwnerId,
-  getBookingsByUserId
+  getBookingsByUserId,
 };
