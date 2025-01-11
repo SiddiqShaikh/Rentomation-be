@@ -31,6 +31,7 @@ import userRouter from "./routes/user.routes.js";
 import propertyRouter from "./routes/property.routes.js";
 import complaintRouter from "./routes/complain.routes.js";
 import bookingRouter from "./routes/booking.routes.js";
+import messageRouter from "./routes/message.routes.js";
 app.get("/", async (req, res) => {
   res.send("Server running");
 });
@@ -39,5 +40,6 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/property", propertyRouter);
 app.use("/api/v1/complain", complaintRouter);
 app.use("/api/v1/booking", bookingRouter);
+app.use("/api/v1/message", messageRouter);
 
 export { app };
