@@ -2,15 +2,11 @@ import mongoose from "mongoose";
 
 const complaintSchema = new mongoose.Schema(
   {
+    name: { type: String, required: true },
     complaintText: {
       type: String,
       required: [true, "Complaint text is required"],
       trim: true,
-    },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
     },
   },
   {

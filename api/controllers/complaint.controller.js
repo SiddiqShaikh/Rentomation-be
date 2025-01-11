@@ -3,7 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 // Create a new complaint
 const createComplaint = asyncHandler(async (req, res) => {
-  const { complaintText } = req.body;
+  const { name, complaintText } = req.body;
 
   if (!complaintText) {
     return res.status(400).json({
@@ -14,7 +14,7 @@ const createComplaint = asyncHandler(async (req, res) => {
 
   const complaint = await Complaint.create({
     complaintText,
-    user: req.user.id, // Assuming user ID is attached to the request
+    name,
   });
 
   res.status(201).json({
@@ -27,7 +27,7 @@ const createComplaint = asyncHandler(async (req, res) => {
 // Get all complaints
 const getAllComplaints = asyncHandler(async (req, res) => {
   const complaints = await Complaint.find()
-    .populate("user", "email") // Populates the `user` field with the email
+    // .populate("user", "email") // Populates the `user` field with the email
     .sort({ createdAt: -1 });
 
   res.status(200).json({

@@ -12,7 +12,7 @@ const router = Router();
 
 router
   .route("/")
-  .post(verifyJWT, createComplaint) // Create a new complaint
+  .post(createComplaint) // Create a new complaint
   .get(getAllComplaints); // Get all complaints
 
 router
@@ -21,4 +21,4 @@ router
   .put(updateComplaint) // Update a specific complaint by ID
   .delete(deleteComplaint); // Delete a specific complaint by ID
 
-  export default router;
+export default router;

@@ -3,16 +3,17 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 import {
   createProperty,
   deleteProperty,
-  getAllProperties,
-  getDashboardAnalytics,
+  getAllAdminProperties,
+  getAllProperties, getDashboardAnalytics,
   getMyProperties,
   getPropertyDetails,
-  updateProperty,
+  updateProperty
 } from "../controllers/property.controller.js";
 
 const router = Router();
 
 router.route("/get-all").get(getAllProperties);
+router.route("/dashboard/admin/all").get(getAllAdminProperties);
 router.route("/dashboard/all").get(getDashboardAnalytics);
 router.route("/my-properties").get(verifyJWT, getMyProperties);
 router.route("/:propertyId").get(getPropertyDetails);
