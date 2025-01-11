@@ -185,7 +185,9 @@ const getBookingsByUserId = asyncHandler(async (req, res) => {
         message: "Owner Id required",
       });
     }
-    const bookings = await Booking.find({ user: userId });
+    const bookings = await Booking.find({ user: userId })
+      .populate("user")
+      .populate("property"); 
     return res.status(200).json({
       message: "Bookings fetched successfully",
       bookings,
